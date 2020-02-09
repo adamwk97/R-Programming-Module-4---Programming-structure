@@ -1,0 +1,37 @@
+<h1 id="r-programming---programming-structure-in-r">R Programming - Programming structure in R</h1>
+<p>&quot;The following data was collected by the local hospital. This data set contains 5 variables based on observation of 8 patients. In addition to the measurements of the patients checking in to the hospital that night, this data provides the patients' histories regarding the frequency of their visits to the hospital in the last 12 months. This data displays the measurement of blood pressure, first assessment by general doctor (bad=1, good =0) titled &quot;first,&quot; the second assessment by external doctor (called &quot;second&quot;), and the last row provides the head of the emergency unit's decision regarding immediate care for the patient based on the values 0 or 1 (low = 0, high =1).&quot;</p>
+<p>First we created a dataframe and cleaned it.</p>
+<pre class="sourceCode r"><code class="sourceCode r">freq =<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.6</span>,<span class="fl">0.3</span>,<span class="fl">0.4</span>,<span class="fl">0.4</span>,<span class="fl">0.2</span>,<span class="fl">0.6</span>,<span class="fl">0.3</span>,<span class="fl">0.4</span>,<span class="fl">0.9</span>,<span class="fl">0.2</span>)
+bloodp =<span class="st"> </span><span class="kw">c</span>(<span class="dv">103</span>,<span class="dv">87</span>,<span class="dv">32</span>,<span class="dv">42</span>,<span class="dv">59</span>,<span class="dv">109</span>,<span class="dv">78</span>,<span class="dv">205</span>,<span class="dv">135</span>,<span class="dv">176</span>)
+first =<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="ot">NA</span>,<span class="dv">1</span>)
+second =<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>)
+finaldecision =<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>)
+
+df =<span class="st"> </span><span class="kw">data.frame</span>(freq,bloodp, first, second, finaldecision)
+df =<span class="st"> </span><span class="kw">na.omit</span>(df)</code></pre>
+<p>Next we changed our data to factors and then created boxplots.</p>
+<pre class="sourceCode r"><code class="sourceCode r">df$first &lt;-<span class="st"> </span><span class="kw">as.factor</span>(df$first)
+df$second &lt;-<span class="st"> </span><span class="kw">as.factor</span>(df$second)
+df$finaldecision &lt;-<span class="st"> </span><span class="kw">as.factor</span>(df$finaldecision)
+
+box1 =<span class="st"> </span><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(first, bloodp, <span class="dt">color =</span> freq))+<span class="kw">geom_boxplot</span>()
+box2 =<span class="st"> </span><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(second, bloodp))+<span class="kw">geom_boxplot</span>()
+box3 =<span class="st"> </span><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(finaldecision, bloodp))+<span class="kw">geom_boxplot</span>()
+
+<span class="kw">grid.arrange</span>(box1,box2,box3, <span class="dt">ncol =</span> <span class="dv">3</span>)</code></pre>
+<div class="figure">
+<img src="Programming-structure-in-R_files/figure-markdown_github/unnamed-chunk-2-1.png" />
+</div>
+<p>And bar plots.</p>
+<pre class="sourceCode r"><code class="sourceCode r">df$freq =<span class="st"> </span><span class="kw">as.factor</span>(df$freq)
+bar1 =<span class="st"> </span><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(freq, bloodp, <span class="dt">fill =</span> first))+<span class="kw">geom_bar</span>(<span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>)
+
+bar2 =<span class="st"> </span><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(freq, bloodp, <span class="dt">fill =</span> second))+<span class="kw">geom_bar</span>(<span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>)
+
+bar3 =<span class="st"> </span><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(freq, bloodp, <span class="dt">fill =</span> finaldecision))+<span class="kw">geom_bar</span>(<span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>)
+
+
+<span class="kw">grid.arrange</span>(bar1, bar2, bar3)</code></pre>
+<div class="figure">
+<img src="Programming-structure-in-R_files/figure-markdown_github/unnamed-chunk-3-1.png" />
+</div>
